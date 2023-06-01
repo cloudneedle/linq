@@ -1,10 +1,66 @@
 package linq
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 type TestObject struct {
 	Name string
 	Age  int
+}
+
+func TestLinq(t *testing.T) {
+	var testObjects = []TestObject{
+		{"Alice", 18},
+		{"Bob", 20},
+		{"Cindy", 22},
+		{"Nancy", 44},
+		{"David", 24},
+	}
+
+	result := Slice(testObjects)
+
+	sum := result.Where(func(item TestObject) bool {
+		return item.Age >= 24
+	}).Sum(func(item TestObject) int {
+		return item.Age
+	})
+	t.Logf("%v", sum)
+}
+
+func TestGroup(t *testing.T) {
+	var testObjects = []TestObject{
+		{"Alice", 18},
+		{"Bob", 20},
+		{"Alice", 22},
+		{"Alice", 22},
+		{"Nancy", 44},
+	}
+
+	result := Slice(testObjects).Group(func(item TestObject) any {
+		return item.Name
+	})
+
+	t.Logf("%v", result)
+}
+
+func TestDistinct(t *testing.T) {
+	var testObjects = []TestObject{
+		{"Alice", 18},
+		{"Alice", 22},
+		{"Alice", 22},
+		{"Alice", 22},
+		{"Nancy", 44},
+	}
+
+	result := Slice(testObjects).Distinct(func(item TestObject) any {
+		return fmt.Sprintf("%s-%d", item.Name, item.Age)
+	}).ForEach(func(to *TestObject) {
+		to.Age++
+	}).ToSlice()
+
+	t.Logf("%v", result)
 }
 
 func TestWhere(t *testing.T) {

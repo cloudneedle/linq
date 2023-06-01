@@ -1,17 +1,23 @@
 package linq
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
 // Linq[T] 是一个泛型接口，定义了一组用于查询和操作元素的方法。
 type Linq[T any] interface {
 	// Count 方法返回满足指定条件的元素的数量。
 	Count(predicate func(T) bool) int
+	// Distinct 方法返回一去重后的新的 Linq[T]。
+	Distinct(keySelector func(T) any) Linq[T]
 	// First 方法返回满足指定条件的第一个元素，如果找不到元素，则返回错误:ErrMoreThanOneItemFound。
 	First(predicate func(T) bool) (*T, error)
 	// FirstOrDefault 方法返回满足指定条件的第一个元素，如果找不到元素，则返回 nil。
 	FirstOrDefault(predicate func(T) bool) *T
 	// ForEach 方法对 Linq[T] 中的每个元素执行指定的操作。
 	ForEach(action func(*T)) Linq[T]
+	// Group 方法返回一个分组后的多维切片。
+	Group(keySelector func(T) any) map[any][]T
 	// Max 方法返回 Linq[T] 中的最大值。
 	Max(less func(T) int) *T
 	// Min 方法返回 Linq[T] 中的最小值。
@@ -47,6 +53,29 @@ func Slice[T any](items []T) Linq[T] {
 	return &slice[T]{
 		items: items,
 	}
+}
+
+// Group 方法返回一个分组后的Linq[T]。
+func (s *slice[T]) Group(keySelector func(T) any) map[any][]T {
+	group := make(map[any][]T)
+	for _, item := range s.items {
+		key := keySelector(item)
+		group[key] = append(group[key], item)
+	}
+	return group
+}
+
+// Distinct 方法返回一个新的 Linq[T]，其中包含 Linq[T] 中元素。
+func (s *slice[T]) Distinct(keySelector func(T) any) Linq[T] {
+	unique := make(map[any]T)
+	for _, item := range s.items {
+		unique[keySelector(item)] = item
+	}
+	result := make([]T, 0, len(unique))
+	for _, item := range unique {
+		result = append(result, item)
+	}
+	return &slice[T]{items: result}
 }
 
 // Max 方法返回 Linq[T] 中的最大值。
