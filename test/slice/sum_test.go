@@ -1,6 +1,9 @@
-package linq
+package slice
 
-import "testing"
+import (
+	"github.com/gocrud/linq"
+	"testing"
+)
 
 func TestSum(t *testing.T) {
 	type Item struct {
@@ -13,7 +16,7 @@ func TestSum(t *testing.T) {
 		{4},
 		{5},
 	}
-	var result = Sum(items, func(i Item) int { return i.Value })
+	var result = linq.Sum(items, func(i Item) int { return i.Value })
 	if result != 15 {
 		t.Fail()
 	}

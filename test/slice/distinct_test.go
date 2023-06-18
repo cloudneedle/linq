@@ -1,13 +1,14 @@
-package linq
+package slice
 
 import (
+	"github.com/gocrud/linq"
 	"reflect"
 	"testing"
 )
 
 func TestDistinct(t *testing.T) {
 	var items = []int{1, 2, 3, 4, 5, 1, 2, 3, 4, 5}
-	var result = Distinct(items)
+	var result = linq.Distinct(items)
 	if !reflect.DeepEqual(result, []int{1, 2, 3, 4, 5}) {
 		t.Fail()
 	}
@@ -30,7 +31,7 @@ func TestDistinctObject(t *testing.T) {
 		{"D", 4},
 		{"E", 5},
 	}
-	var result = Distinct(items)
+	var result = linq.Distinct(items)
 	if !reflect.DeepEqual(result, []Item{
 		{"A", 1},
 		{"B", 2},

@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-func TestSkip(t *testing.T) {
+func TestSelect(t *testing.T) {
 	var items = []int{1, 2, 3, 4, 5}
-	var result = linq.Skip(items, 2)
+	var result = linq.Map(items, func(i int) int { return i * 2 })
 	t.Log(result)
 }

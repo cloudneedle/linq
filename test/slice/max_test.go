@@ -1,10 +1,13 @@
-package linq
+package slice
 
-import "testing"
+import (
+	"github.com/gocrud/linq"
+	"testing"
+)
 
 func TestMax(t *testing.T) {
 	var items = []int{1, 2, 3, 4, 5}
-	var result = Max(items, func(i int) int { return i })
+	var result = linq.Max(items, func(i int) int { return i })
 	if *result != 5 {
 		t.Fail()
 	}

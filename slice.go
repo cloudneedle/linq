@@ -103,20 +103,20 @@ func Reverse[T any](items []T) []T {
 	return result
 }
 
-// Select 用于将切片中的每个元素映射成一个新的元素，返回一个包含新元素的切片
+// Map 用于将切片中的每个元素映射成一个新的元素，返回一个包含新元素的切片
 // selector 参数是映射函数，接收切片中的每个元素，返回一个新元素。
 // 例如，如果要将切片中的每个元素转换成字符串，可以这样调用：
 //
-//	result := Select(items, func(item int) string {
+//	result := Map(items, func(item int) string {
 //	  return strconv.Itoa(item)
 //	})
 //
 // 如果要将切片中的每个元素转换成另一个类型，可以这样调用：
 //
-//	result := Select(items, func(item int) MyType {
+//	result := Map(items, func(item int) MyType {
 //	  return MyType(item)
 //	})
-func Select[T, R any](items []T, selector func(T) R) []R {
+func Map[T, R any](items []T, selector func(T) R) []R {
 	result := make([]R, len(items))
 	for i, item := range items {
 		result[i] = selector(item)
