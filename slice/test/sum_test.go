@@ -1,7 +1,7 @@
-package slice
+package test
 
 import (
-	"github.com/gocrud/linq"
+	"github.com/gocrud/linq/slice"
 	"testing"
 )
 
@@ -16,7 +16,7 @@ func TestSum(t *testing.T) {
 		{4},
 		{5},
 	}
-	var result = linq.Sum(items, func(i Item) int { return i.Value })
+	var result = slice.Sum(items, func(i Item) int { return i.Value })
 	if result != 15 {
 		t.Fail()
 	}

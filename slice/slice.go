@@ -1,6 +1,7 @@
-package linq
+package slice
 
 import (
+	"github.com/gocrud/linq"
 	"math/rand"
 )
 
@@ -132,14 +133,14 @@ func Single[T any](items []T, predicate func(T) bool) (*T, error) {
 	for _, item := range items {
 		if predicate(item) {
 			if result != nil {
-				return nil, ErrorMoreThanOneItemFound
+				return nil, linq.ErrorMoreThanOneItemFound
 			}
 			result = new(T)
 			*result = item
 		}
 	}
 	if result == nil {
-		return nil, ErrorNoItemsFound
+		return nil, linq.ErrorNoItemsFound
 	}
 	return result, nil
 }
