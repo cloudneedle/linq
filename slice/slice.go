@@ -6,12 +6,13 @@ import (
 )
 
 // Distinct 函数返回一个新的切片，其中包含原始切片中的不重复元素。
-func Distinct[T comparable](items []T) []T {
-	seen := make(map[T]bool)
+func Distinct[T any, K comparable](items []T, keySelector func(T) K) []T {
+	seen := make(map[K]bool)
 	result := make([]T, 0, len(items))
 	for _, item := range items {
-		if !seen[item] {
-			seen[item] = true
+		key := keySelector(item)
+		if !seen[key] {
+			seen[key] = true
 			result = append(result, item)
 		}
 	}
